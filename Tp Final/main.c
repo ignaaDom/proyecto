@@ -9,6 +9,8 @@
 #include "clientes.h"
 #include "consumo.h"
 #include "consumos.h"
+#include "ArbolCliente.h"
+#include "ListaConsumos.h"
 
 
 const char archivo_clientes[30] = "clientes.dat";
@@ -23,9 +25,12 @@ char opcionesConsumos();
 /// -------------------- Opciones Clientes --------------------
 char opcionesClientes();
 
+///--------------------- Opciones Arbol Cliente ---------------------
+char opcionesArbol();
 
 int main()
 {
+    srand(time(NULL));
     char ctr;
     int id;
     int flag;
@@ -33,9 +38,11 @@ int main()
     char opcion;
     char consulta[20];
     int consultaCon;
-    int cargarConsumos;
+    int cargar;
 
     stConsumos consumo;
+
+    nodoArbol* arbolClientes = NULL;
 
     system("color 1F");
 
@@ -116,6 +123,26 @@ int main()
         case '5':
             muestraArchivoClientes(archivo_clientes);
             break;
+        ///Carga aleatoria de Clientes
+        case '6':
+            printf("\n\tIngrese la cantidad de Clientes que quiera agregar: ");
+            scanf("%d",&cargar);
+
+            flag = agregarClientesAleatorios(archivo_clientes,cargar);
+            if(flag == cargar){
+                printf("\n\n\n\tClientes cargados correctamente.");
+            }else{
+                printf("\n\n\n\tHubo un errar en la carga.");
+            }
+        break;
+
+
+        ///Arbol de Clientes---------------------------------
+        case '7':
+            arbolClientes = crearArbolClientes(archivo_consumos,archivo_clientes);
+
+            muestraArbol(arbolClientes);
+        break;
 
 
         ///Cargar archivo Consumos----------------------------
@@ -195,13 +222,13 @@ int main()
         ///Carga de consumos aleatorios
             case 'g':
                 printf("\n\tIngrese la cantidad de consumos a cargar: ");
-                scanf("%d", &cargarConsumos);
+                scanf("%d", &cargar);
 
                 printf("\n\n");
 
-                flag = agregarConsumosAleatorios(archivo_clientes,archivo_consumos,cargarConsumos);
+                flag = agregarConsumosAleatorios(archivo_clientes,archivo_consumos,cargar);
 
-                if(flag == cargarConsumos){
+                if(flag == cargar){
                     printf("\n\tConsumos cargados con exito");
                 }else{
                     printf("\n\tError al cargar consumos.");
@@ -240,23 +267,27 @@ char menu()
     {
 
         system("cls");
-        gotoxy(20,3);
+        gotoxy(15,3);
         printf("\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2 || MENU PRINCIPAL || \xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2");
-        gotoxy(20,6);
+        gotoxy(15,6);
         printf("\xDB\xDB\xDB\xDB | 1. CLIENTE:   ");
-        gotoxy(20,8);
-        printf(" \t * ABM y Gestion de Clientes.");
-        gotoxy(20,12);
+        gotoxy(15,8);
+        printf("* ABM y Gestion de Clientes.");
+        gotoxy(15,12);
         printf("\xDB\xDB\xDB\xDB | 2. CONSUMOS: ");
-        gotoxy(20,14);
-        printf(" \t * Gestion de Consumo de datos.");
-        gotoxy(20,18);
+        gotoxy(15,14);
+        printf("* Gestion de Consumo de datos.");
+        gotoxy(15,18);
+        printf("\xDB\xDB\xDB\xDB | 3. ARBOL CLIENTES: ");
+        gotoxy(15,20);
+        printf("* Gestion del Arbol de Clientes.");
+        gotoxy(15,23);
         printf("Elija una opcion - ESC para salir:");
         fflush(stdin);
         opcion = getch();
 
     }
-    while(opcion != '1' && opcion != '2' && opcion != 27);
+    while(opcion != '1' && opcion != '2' && opcion != '3' && opcion != 27);
 
     switch(opcion)
     {
@@ -266,6 +297,9 @@ char menu()
     case '2':
         ctr = opcionesConsumos();
         break;
+    case '3':
+        ctr = opcionesArbol();
+    break;
     case 27:
         ctr = 27;
         break;
@@ -283,27 +317,29 @@ char opcionesClientes(){
     do
     {
         system("cls");
-        gotoxy(20,3);
+        gotoxy(15,3);
         printf("\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2 || OPCIONES DE CLIENTE  || \xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2");
-        gotoxy(20,6);
+        gotoxy(15,6);
         printf("\xDB\xDB\xDB\xDB | 1. Alta de Cliente.   ");
-        gotoxy(20,8);
+        gotoxy(15,8);
         printf("\xDB\xDB\xDB\xDB | 2. Baja de Cliente.");
-        gotoxy(20,10);
+        gotoxy(15,10);
         printf("\xDB\xDB\xDB\xDB | 3. Modificar Cliente.");
-        gotoxy(20,12);
+        gotoxy(15,12);
         printf("\xDB\xDB\xDB\xDB | 4. Consultar un Cliente.");
-        gotoxy(20,14);
+        gotoxy(15,14);
         printf("\xDB\xDB\xDB\xDB | 5. Listado de Clientes");
-        gotoxy(20,16);
+        gotoxy(15,16);
+        printf("\xDB\xDB\xDB\xDB | 6. Carga Aleatoria de Clientes");
+        gotoxy(15,18);
         printf("\xDB\xDB\xDB\xDB | 0. Volver.");
-        gotoxy(20,19);
-        gotoxy(20,21);
+        gotoxy(15,21);
+        gotoxy(15,23);
         printf("Elija una opcion - ESC para salir:");
         fflush(stdin);
         ctr = getch();
     }
-    while((ctr < 48 || ctr > 53) && ctr != 27);
+    while((ctr < 48 || ctr > 54) && ctr != 27);
 
     return ctr;
 }
@@ -319,26 +355,26 @@ char opcionesConsumos(){
     do
     {
         system("cls");
-        gotoxy(20,3);
+        gotoxy(15,3);
         printf("\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2 || OPCIONES DE CONSUMOS  || \xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2");
-        gotoxy(20,6);
+        gotoxy(15,6);
         printf("\xDB\xDB\xDB\xDB | a. Alta de Consumo.   ");
-        gotoxy(20,8);
+        gotoxy(15,8);
         printf("\xDB\xDB\xDB\xDB | b. Baja de Consumo.");
-        gotoxy(20,10);
+        gotoxy(15,10);
         printf("\xDB\xDB\xDB\xDB | c. Modificar un Consumo.");
-        gotoxy(20,12);
+        gotoxy(15,12);
         printf("\xDB\xDB\xDB\xDB | d. Consulta de Consumo.");
-        gotoxy(20,14);
+        gotoxy(15,14);
         printf("\xDB\xDB\xDB\xDB | e. Listado de Consumos.");
-        gotoxy(20,16);
+        gotoxy(15,16);
         printf("\xDB\xDB\xDB\xDB | f. Buscar consumo por fecha.");
-        gotoxy(20,18);
+        gotoxy(15,18);
         printf("\xDB\xDB\xDB\xDB | g. Cargar consumos Aleatorios.");
-        gotoxy(20,20);
+        gotoxy(15,20);
         printf("\xDB\xDB\xDB\xDB | 0. Volver.");
-        gotoxy(20,23);
-        gotoxy(20,25);
+        gotoxy(15,23);
+        gotoxy(15,25);
         printf("Elija una opcion - ESC para salir:");
         fflush(stdin);
         ctr = getch();
@@ -349,3 +385,29 @@ char opcionesConsumos(){
 }
 /// -------------------- Opciones Consumos --------------------
 
+
+///--------------------- Opciones Arbol Cliente ---------------------
+char opcionesArbol(){
+    char ctr;
+
+    do{
+        system("cls");
+        gotoxy(15,3);
+        printf("\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2 || OPCIONES DEL ARBOL DE CLIENTES  || \xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2");
+        gotoxy(15,6);
+        printf("\xDB\xDB\xDB\xDB | 1. Crear Arbol Clientes");
+        gotoxy(15,8);
+        printf("\xDB\xDB\xDB\xDB | 0. Volver.");
+        gotoxy(15,11);
+        gotoxy(15,13);
+        printf("Elija una opcion - ESC para salir:");
+        fflush(stdin);
+        ctr = getch();
+
+        ctr = ctr + 6;
+
+    }while(ctr != 55 && ctr != 27 && ctr != 48);
+
+    return ctr;
+}
+///--------------------- Opciones Arbol Cliente ---------------------

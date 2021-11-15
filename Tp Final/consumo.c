@@ -539,7 +539,7 @@ stConsumos buscarConsumoFecha(FILE *archi,int anio, int mes, int dia){
 
 ///---------------------- Muestra un consumo ----------------------
 void muestraUnConsumo(stConsumos a){
-    printf("\n\tId..................: %d", a.id);
+    //printf("\n\tId..................: %d", a.id);
     printf("\n\n\tIdCliente...........: %d", a.idCliente);
     printf("\n\tAnio................: %d", a.anio);
     printf("\n\tMes.................: %d", a.mes);

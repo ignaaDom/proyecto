@@ -492,3 +492,23 @@ void muestraUnCliente(stCliente a){
     printf("\n\tEstado................: %d", a.baja);
 }
 ///--------------------- Muestra un Clientes---------------------
+
+
+///---------------------- Recorrer Archivo de clientes ----------------------
+stCliente recorrerArchivoClientes(const char nombreArchivoClientes[],int idCliente){
+    stCliente a;
+    int flag = 0;
+
+    FILE* archi = fopen(nombreArchivoClientes,"rb");
+
+    if(archi){
+        while(flag == 0 && fread(&a,sizeof(stCliente),1,archi)){
+            if(a.id == idCliente){
+                flag = 1;
+            }
+        }
+        fclose(archi);
+    }
+    return a;
+}
+///---------------------- Recorrer Archivo de clientes ----------------------

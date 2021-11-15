@@ -58,4 +58,7 @@ void consultarUnCliente(const char archivo[], char opcion, char consulta[]);
 ///--------------------- Muestra un Clientes---------------------
 void muestraUnCliente(stCliente a);
 
+///---------------------- Recorrer Archivo de clientes ----------------------
+stCliente recorrerArchivoClientes(const char nombreArchivoClientes[],int idCliente);
+
 #endif // CLIENTE_H_INCLUDED
