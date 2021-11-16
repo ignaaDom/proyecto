@@ -26,6 +26,9 @@ int validarCadenaNumeros(char cadena[]);
 
 ///---------------------- Devuelve el anio, mes, dia en variables enteras ----------------------
 void devolverFechaHoy(int *anioHoy, int *mesHoy, int *diaHoy);
+///---------------------- Devuelve el anio en una variable entera ----------------------
+void devolverAnioHoy(int *anioHoy);
+
 
 ///---------------------- Presentacion del Sistema y Grupo ----------------------
 void loader();

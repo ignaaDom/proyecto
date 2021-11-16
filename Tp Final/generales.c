@@ -95,6 +95,18 @@ void devolverFechaHoy(int *anioHoy, int *mesHoy, int *diaHoy){
 }
 ///---------------------- Devuelve el anio, mes, dia en variables enteras ----------------------
 
+///---------------------- Devuelve el anio en una variable entera ----------------------
+void devolverAnioHoy(int *anioHoy){
+    char anio[10];
+
+    time_t tiempo = time(0);
+    struct tm *tlocal = localtime(&tiempo);
+    strftime(anio,128,"%Y",tlocal);
+
+    *anioHoy = atoi(anio);
+}
+///---------------------- Devuelve el anio en una variable entera ----------------------
+
 /// ---------------------- Presentacion del Sistema y Grupo ------------------------------------
 
 void loader(void){
@@ -122,11 +134,22 @@ void loader(void){
         printf("*");
     }
 
-    gotoxy(15,9);
+    gotoxy(20,7);
     printf("* Sistema de Clientes y Consumos");
+
     gotoxy(15,11);
-    printf("GRUPO: IGCAMA");
-    gotoxy(15,12);
+    printf("TP FINAL - 1er Cautrimestre");
+    gotoxy(15,13);
+    printf("GRUPO: IGTACA");
+    gotoxy(15,15);
     printf("Dominguez - Tarchini - Carro");
+
+    gotoxy(15,18);
+    printf("TP FINAL - 2do Cuatrimestre");
+    gotoxy(15,20);
+    printf("GRUPO: IGLU");
+    gotoxy(15,22);
+    printf("Dominguez - Caveda");
+
 }
 /// ---------------------- Presentacion del Sistema y Grupo ------------------------------------

@@ -48,7 +48,7 @@ int main()
 
     loader();
 
-    gotoxy(15,14);
+    gotoxy(15,25);
     system("pause");
 
     system("cls");
@@ -138,10 +138,49 @@ int main()
 
 
         ///Arbol de Clientes---------------------------------
+        ///Crea arbol de clientes por el archivo consumos
         case '7':
             arbolClientes = crearArbolClientes(archivo_consumos,archivo_clientes);
 
             muestraArbol(arbolClientes);
+        break;
+        ///Carga todos los clientes con sus consumos al arbol
+        case '8':
+            arbolClientes = archivoClientesToArbol(archivo_consumos,archivo_clientes);
+
+            muestraArbol(arbolClientes);
+        break;
+        ///Muestra el arbol de clientes
+        case '9':
+            if(arbolClientes){
+                muestraArbol(arbolClientes);
+            }else{
+                printf("\n\tCargue el arbol de clientes y vuelva a intentar...");
+            }
+        break;
+        ///Liquida los consumos de un mes en especifico
+        case 58:
+            if(arbolClientes){
+                printf("\n\tIngrese el id del cliente: ");
+                scanf("%d",&id);
+
+                system("cls");
+
+                menuBuscarClienteArbol(arbolClientes,id);
+            }else{
+                printf("\n\tCargue el arbol de clientes y vuelva a intentar...");
+            }
+        break;
+        ///Borra un nodo del arbol
+        case 59:
+            if(arbolClientes){
+                printf("\n\tIngrese un el id del cliente que desea borrar: ");
+                scanf("%d",&id);
+
+                arbolClientes = borrarNodo(arbolClientes,id);
+            }else{
+                printf("\n\tCargue el arbol de clientes y vuelva a intentar...");
+            }
         break;
 
 
@@ -395,18 +434,28 @@ char opcionesArbol(){
         gotoxy(15,3);
         printf("\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2 || OPCIONES DEL ARBOL DE CLIENTES  || \xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2\xF2");
         gotoxy(15,6);
-        printf("\xDB\xDB\xDB\xDB | 1. Crear Arbol Clientes");
+        printf("\xDB\xDB\xDB\xDB | 1. Crear Arbol Clientes en base al archivo Consumos.");
         gotoxy(15,8);
+        printf("\xDB\xDB\xDB\xDB | 2. Crear Arbol Clientes en base al archivo Clientes.");
+        gotoxy(15,10);
+        printf("\xDB\xDB\xDB\xDB | 3. Muestra arbol de clientes.");
+        gotoxy(15,12);
+        printf("\xDB\xDB\xDB\xDB | 4. Liquidar consumos de un mes o anio en especifico.");
+        gotoxy(15,14);
+        printf("\xDB\xDB\xDB\xDB | 5. Borrar nodo.");
+        gotoxy(15,16);
         printf("\xDB\xDB\xDB\xDB | 0. Volver.");
-        gotoxy(15,11);
-        gotoxy(15,13);
+        gotoxy(15,19);
+        gotoxy(15,21);
         printf("Elija una opcion - ESC para salir:");
         fflush(stdin);
         ctr = getch();
 
-        ctr = ctr + 6;
+        if(ctr != 48 && ctr != 27){
+            ctr = ctr + 6;
+        }
 
-    }while(ctr != 55 && ctr != 27 && ctr != 48);
+    }while((ctr < 55 || ctr > 59) && ctr != 27 && ctr != 48);
 
     return ctr;
 }
